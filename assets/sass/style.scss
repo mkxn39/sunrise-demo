@@ -1,0 +1,1238 @@
+
+$font-family-ja: "Zen Old Mincho", serif;
+$font-family-ja2: "Zen Kaku Gothic New", sans-serif;
+$font-family-ja3: "Noto Sans JP", sans-serif;
+$font-family-en: "Montserrat", sans-serif;
+$font-size-base: 16px;
+$line-height-base: 150%;
+$color: #333;
+$color-key: #16186B;
+$color-key2: #A5B5D2;
+
+
+// ブレークポイントの定義
+$breakpoints: (
+  tb: "screen and (min-width: 768px)",  // タブレット以上
+  pc: "screen and (min-width: 1024px)" // PC以上
+);
+
+@use "sass:map";
+
+// メディアクエリのミックスイン
+@mixin mq($breakpoint) {
+    @if map.has-key($breakpoints, $breakpoint) {
+        @media #{map.get($breakpoints, $breakpoint)} {
+            @content;
+        }
+    } @else {
+        @error "ブレークポイント #{$breakpoint} は定義されていません。";
+    }
+}
+
+// 共通 ------------------------------
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-size: $font-size-base;
+    font-weight: 400;
+    font-family: $font-family-ja3;
+    line-height: $line-height-base;
+    color: $color;
+}
+
+.hidden-pc{
+    display: block;
+    @include mq(pc) {
+        display: none;
+    }
+
+    @include mq(tb) {
+        display: none;
+    }
+}
+
+.hidden-sp {
+    display: none;
+    @include mq(pc) {
+        display: block;
+    }
+    @include mq(tb) {
+    display: block;
+    }
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-in-out;
+    z-index: 999;
+
+    .open {
+        opacity: 1;
+        visibility: visible;
+    }
+}
+
+.entry-btn {
+    position: fixed;
+    z-index: 1000;
+    transition: opacity 0.3s ease;
+  
+    a {
+      display: block;
+    }
+  
+    img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+  
+    // スマホ（～768px）
+    @media (max-width: 768px) {
+      bottom: 0;
+      left: 0;
+      width: 100%;
+    }
+  
+    // PC（769px～）
+    @media (min-width: 769px) {
+      bottom: 0px;
+      right:0px;
+      width: 250px;
+    }
+}
+
+.inner {
+    padding: 0 20px;
+
+    @include mq(tb) {
+        padding: 0 40px;
+    }
+
+    @include mq(pc) {
+        padding: 0;
+        max-width: 960px;
+        margin: 0 auto;
+    }
+}
+
+.heading {
+    display: flex;
+    flex-direction: column;
+    color: $color-key;
+
+    &-en {
+        font-family: $font-family-ja3;
+        font-size: 14px;
+        font-weight: 700;
+        letter-spacing: 0.98px;
+
+        @include mq(tb) {
+            font-size: 16px;
+        }
+    }
+
+    &-ja {
+        font-size: 20px;
+        font-weight: 600;
+
+        @include mq(tb) {
+            font-size: 28px;
+            margin-top: 10px;
+        }
+    }
+}
+
+.image-box {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+
+    @include mq(tb) {
+        gap: 20px;
+    }
+  
+    img {
+        width: calc((100% - 20px) / 3); // 3枚並べると仮定（SP）
+        height: auto;
+        display: block;
+        object-fit: cover;
+
+        @include mq(tb) {
+            width: calc((100% - 60px) / 4); // 4枚並べると仮定（PC）
+        }
+    }
+    .hidden-sp {
+        display: none;
+    
+        @include mq(tb) {
+          display: block;
+        }
+      }
+}
+
+.image-cards {
+    margin-top: 60px;
+    margin-bottom: 60px;
+
+    @include mq(tb) {
+        display: flex;
+        gap: 60px;
+        max-width: 734px;
+        margin: 0 auto;
+        margin-top: 110px;
+        margin-bottom: 110px;
+    }
+
+    .image-card {
+        box-shadow: 0px 4px 13px 0px rgba(159, 159, 159, 0.25);
+        padding: 13px 12px 30px 12px;
+
+        &:nth-child(2) {
+            margin-top: 40px;
+
+            @include mq(tb) {
+                margin-top: 0;
+            }
+        }
+
+        &__text01 {
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: 500;
+        }
+        &__text02 {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #767676;
+
+        }
+        img {
+            width: 100%;
+            height: 185px;
+            object-fit: cover;
+        }
+    }
+}
+
+.button-box {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    align-items: center;
+    padding-top: 45px;
+    padding-bottom: 45px;
+
+    @include mq(tb) {
+        flex-direction: row;
+        justify-content: center;
+        gap: 32px;
+        padding-top: 0;
+        margin-bottom: 90px;
+    }
+
+    .service-button,
+    .works-button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-decoration: none;
+        flex-direction: column;
+        color: #FFF;
+        font-size: 16px;
+        font-weight: bold;
+        position: relative;
+        width: 327px;
+        height: 133px;
+        box-sizing: border-box;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.192);
+
+        @include mq(tb) {
+            width: 467px;
+            height: 196px;
+            font-size: 20px;
+        }
+
+        // 背景画像（それぞれのボタンに指定）
+        &.bg1::before,
+        &.bg2::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            z-index: 0;
+        }
+
+        &.bg1::before {
+            background-image: url('/assets/img/service-btn__bg.png');
+        }
+
+        &.bg2::before {
+            background-image: url('/assets/img/works-btn__bg.png');
+        }
+
+        // テキストを最前面に
+        span {
+            position: relative;
+            z-index: 2;
+
+            &:nth-child(1) {
+                font-size: 20px;
+            }
+            &:nth-child(2) {
+                font-family: $font-family-en;
+                font-weight: 500;
+                margin-top: 5px;
+            }
+        }
+
+        &::after {
+            content: "";
+            position: absolute;
+            top: 5px;
+            bottom: 5px;
+            left: 5px;
+            right: 5px;
+            z-index: 1;
+            border: 1px solid #FFF;
+        }
+    }
+}
+
+// ヘッダー ------------------------------
+
+.header {
+    height: 70px;
+    background: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 100000;
+
+    &__left {
+        padding-left: 27px;
+
+        @include mq(tb) {
+            padding-left: 72px;
+        }
+
+        h1 {
+            font-weight: 900;
+            font-size: 18px;
+            margin-bottom: -5px;
+        }
+
+        span {
+            font-size: 14px;
+            margin-top: -5px;
+        }
+    }
+
+    &__right {
+        display: flex;
+        gap: 35px;
+        line-height: 70px;
+
+        .header__nav {
+            display: none;
+
+            @include mq(pc) {
+                display: flex;
+                gap: 40px;
+            }
+        }
+
+        .header__button {
+            display: none;
+
+            @include mq(pc) {
+                display: flex;
+                gap: 0;
+            }
+
+            .header__entry-btn {
+                border-radius: 0px 0px 0px 10px;
+                background: $color-key;
+                color: #fff;
+                padding: 0 60px;
+            }
+            .header__contact-btn {
+                background: $color-key2;
+                padding: 0 27px;
+            }
+        }
+
+        // ハンバーガーボタン
+        .hamburger {
+            padding: 0 20px;
+            background: $color-key;
+
+            @include mq(tb) {
+                display: none;
+            }
+        }
+
+        .drawer-icon {
+            width: 30px;
+            height: 18px;
+            position: relative;
+            z-index: 51;
+
+            @include mq(pc) {
+                display: none;
+            }
+
+            &.is-checked {
+                .drawer-icon__bar {
+                    &:nth-of-type(1){
+                        transform: rotate(30deg);
+                        top: 10px;
+                    }
+
+                    &:nth-of-type(2){
+                        display: none;
+                    }
+                    &:nth-of-type(3){
+                        transform: rotate(-30deg);
+                        top: 10px;
+                    }
+                }
+            }
+        
+            &__bar {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 30px;
+                height: 2px;
+                border-radius: 6px;
+                background: #fff;
+                transition: transform 0.3s linear, top 0.3s linear;
+        
+                &:nth-of-type(1){
+                }
+                &:nth-of-type(2){
+                    top: 9px;
+                }
+                &:nth-of-type(3){
+                    top: 18px;
+                }
+            }
+        }
+    }
+}
+
+.drawer-menu {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 300px;
+    height: 100vh;
+    background: #163870f0;
+    transition: right 0.3s ease-in-out;
+    z-index: 2000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    &.is-checked {
+        right: 0;
+    }
+
+    .drawer-content {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    a {
+        color: white;
+        font-size: 16px;
+        font-weight: bold;
+        text-decoration: none;
+    }
+}
+
+// ファーストビュー ------------------------------
+
+.fv {
+    margin-top: 70px;
+
+    &__images {
+        margin-top: 17px;
+
+        @include mq(tb) {
+            margin-top: 50px;
+        }
+
+        img {
+            width: 175px;
+            height: 175px;
+            object-fit: cover;
+            margin-left: 5px;
+            margin-right: 5px;
+            pointer-events: auto;
+        }
+    }
+}
+
+// 社長からのメッセージ ------------------------------
+
+.message {
+    position: relative;
+    overflow: hidden;
+    padding: 50px 0;
+
+    @include mq(tb) {
+       padding-top: 200px;
+       padding-bottom: 110px;
+    }
+
+    &__left {
+        .message__text-box {
+
+            .text-box_head {
+                p {
+                    &:nth-child(1) {
+                        font-size: 14px;
+                        font-weight: 500;
+
+                        @include mq(tb) {
+                            font-size: 18px;
+                        }
+                    }
+                    &:nth-child(2) {
+                        font-size: 22px;
+                        font-weight: 600;
+                        padding-top: 5px;
+                        line-height: 150%;
+
+                        @include mq(tb) {
+                            font-size: 28px;
+                            padding-top: 10px;
+                        }
+                    }
+                }
+            }
+            .text-box_text {
+                font-size: 14px;
+                line-height: 150%;
+                margin-top: 40px;
+
+                @include mq(tb) {
+                    font-size: 16px;
+                    line-height: 190%;
+                    color: #737373;
+                }
+            }
+        }
+    }
+
+    &__right {
+        text-align: center;
+        margin-top: 70px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 20px;
+
+        @include mq(tb) {
+            margin-top: 0;
+            width: 350px;
+            flex-shrink: 0;
+            gap: 10px;
+        }
+
+        .message__x {
+            width: 100%;
+            transition: transform 0.3s ease;
+            display: inline-block;
+            box-shadow: 0 4px 12px rgba(49, 49, 49, 0.155);
+
+            @include mq(tb) {
+                width: 100%;
+                border-radius: 5px;
+            }
+
+            &:hover {
+                transform: translateY(-5px);
+            }
+
+            &-text {
+                background-color: #fff;
+                padding: 14px 25px;
+                text-align: center;
+                display: block;
+                box-shadow: 0 4px 12px rgba(87, 87, 87, 0.155);
+                text-decoration: underline;
+                position: relative;
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+                i {
+                    font-size: 20px;
+                    text-decoration: underline;
+                }
+
+                &::after {
+                    content: "";
+                    position: absolute;
+                    right: 25px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    width: 1em;
+                    height: 1em;
+                    background-image: url('/assets/img/up-right.svg');
+                    background-size: contain;
+                    background-repeat: no-repeat;
+                    transition: transform 0.3s ease;
+                }
+
+                &:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
+                }
+            }
+        }
+    }
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        margin-top: 65px;
+
+        @include mq(tb) {
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: stretch;
+            margin-top: 80px;
+        }
+    }
+
+    &::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: right bottom;
+        width: 300px;
+        height: 157px;
+        background-image: url('../img/message__bg.png'); /* スマホ用 */
+        z-index: -2;
+
+        @include mq(tb) {
+            width: 600px;
+            height: 300px;
+        }
+    }
+}
+
+
+// 会社の魅力 ------------------------------
+
+.merit {
+    padding: 50px 0;
+
+    @include mq(tb) {
+        padding: 100px 0;
+    }
+
+    &__text1 {
+        line-height: 170%;
+        margin-top: 36px;
+
+        @include mq(tb) {
+            font-size: 16px;
+            margin-top: 75px;
+        }
+    }
+
+    &__text2 {
+        font-size: 18px;
+        font-weight: 600;
+        line-height: 170%;
+        margin-top: 36px;
+        color: $color-key;
+        text-align: center;
+
+        @include mq(tb) {
+            font-size: 28px;
+            margin-top: 110px;
+        }
+    }
+
+    &__boxes {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin-top: 45px;
+
+        @include mq(tb) {
+            margin-top: 75px;
+        }
+    }
+
+    &__box {
+        // border: 1px solid $color-key2;
+        background-color: #F4F4F4;
+        width: calc(50% - 10px);
+        margin-bottom: 20px;
+
+        @include mq(tb) {
+            width: calc((100% - 120px) / 5);
+        }
+
+        .box-content {
+            text-align: center;
+            padding: 25px 0;
+
+            img {
+                width: 50px;
+            }
+            p {
+                font-size: 14px;
+                margin-top: 11px;
+            }
+        }
+    }
+}
+
+// 社員インタビュー ------------------------------
+
+.interview {
+    position: relative;
+    overflow: hidden;
+    padding: 90px 0;
+
+    @include mq(tb) {
+        padding: 110px 0;
+    }
+
+    &__boxes {
+        margin-top: 50px;
+        position: relative;
+
+        @include mq(tb) {
+            display: flex;
+            margin-top: 110px;
+        }
+    }
+
+    &__box {
+        overflow: hidden;
+
+        img {
+          width: 100%;
+          height: auto;
+          display: block;
+          border-radius: 10px;
+        }
+
+        @include mq(tb) {
+            margin-left: 15px;
+            margin-right: 15px;
+        }
+
+        &-content {
+          position: relative;
+        }
+    }
+
+    &__name-box {
+        border-radius: 0px 20px 0px 0px;
+        background-color: #FFF;
+        position: absolute;
+        bottom: -50px;
+        left: 0;
+        padding: 20px 17px;
+        width: 205px;
+
+        p {
+            margin: 0;
+            font-size: 14px;
+            line-height: 1.6;
+            color: $color-key;
+            font-weight: 700;
+
+            &:nth-child(1) {
+                font-size: 12px;
+            }
+
+            &:nth-child(3) {
+                font-size: 24px;
+                color: #333;
+            }
+
+            &:nth-child(4) {
+                font-size: 14px;
+                color: #333;
+            }
+        }
+    }
+
+    &__text {
+        margin-top: 60px;
+        font-size: 14px;
+        font-family: $font-family-ja2;
+    }
+
+    .slick-prev,
+    .slick-next {
+        background: rgba(255, 255, 255, 0.565);
+        border: none;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+        font-size: 20px;
+        color: #3333339f;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        position: absolute;
+        top: 45%;
+        transform: translateY(-50%);
+        z-index: 2;
+
+        @include mq(tb) {
+            top: 60%;
+            width:40px;
+            height: 40px;
+        }
+
+        &:hover {
+            background: #3333337c;
+            color: #fff;
+        }
+
+        i {
+            font-size: 14px;
+        }
+    }
+    .slick-prev {
+    left: 10px;
+
+        @include mq(tb) {
+            left: 40px;
+        }
+    }
+    .slick-next {
+    right: 10px;
+
+        @include mq(tb) {
+            right: 40px;
+        }
+    }
+}
+
+// １日のながれ ------------------------------
+
+.schedule {
+    padding-top: 87px;
+    padding-bottom: 87px;
+
+    @include mq(tb) {
+        padding-top: 110px;
+        padding-bottom: 200px;    }
+
+    &__content {
+        margin-top:60px;
+
+        @include mq(tb) {
+            margin-top: 105px;
+        }
+    }
+}
+
+// 募集要項 ------------------------------
+
+.requirements {
+    padding: 80px 0;
+    background-color: #E9F1FF;
+
+    @include mq(tb) {
+        padding: 200px 0;
+    }
+
+    .heading {
+        text-align: center;
+    }
+
+    &__content {
+        background-color: #fff;
+        padding: 40px 20px;
+        margin-top: 40px;
+
+        @include mq(tb) {
+            padding: 105px 110px;
+            margin-top: 80px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    }
+
+    &-detail {
+        max-width: 720px;
+        margin: 0 auto;
+
+        .row {
+            display: flex;
+            flex-direction: column;
+            padding: 16px 0;
+            border-bottom: 1px solid #e0e0e0;
+
+            dt {
+                font-weight: 600;
+                color: #333;
+                margin-bottom: 4px;
+            }
+
+            dd {
+                color: #555;
+                font-size: 15px;
+                line-height: 1.6;
+            }
+
+            @include mq(tb) {
+                flex-direction: row;
+
+                dt {
+                width: 160px;
+                margin-bottom: 0;
+                }
+
+                dd {
+                flex: 1;
+                }
+            }
+        }
+    }
+}
+
+// 応募フロー -----------------------------
+
+// .flow {
+//     padding-top: 70px;
+//     padding-bottom: 70px;
+//     background-color: #f5f5f5;
+
+//     @include mq(pc) {
+//         padding-top: 110px;
+//         padding-bottom: 110px;
+//     }
+//     .heading {
+//         text-align: center;
+//         &-ja {
+//             color: $color;
+//         }
+//     }
+
+//     &__boxes {
+//         margin-top: 45px;
+//         display: flex;
+//         flex-direction: column;
+//         gap: 45px;
+
+//         @include mq(pc) {
+//             max-width: 380px;
+//             margin-left: auto;
+//             margin-right: auto;
+//         }
+
+//     }
+
+//     &__box {
+//         position: relative;
+//         background: #ffffff; /* 白背景 */
+//         border-radius: 8px;
+
+//         &:not(:last-of-type)::after {
+//             content: "";
+//             position: absolute;
+//             bottom: -20px; /* 三角の位置 */
+//             left: 45%; /* 三角の横位置（調整可） */
+//             width: 0;
+//             height: 0;
+//             border-left: 20px solid transparent;
+//             border-right: 20px solid transparent;
+//             border-top: 20px solid #ffffff; /* 三角形の色（背景色と同じ） */
+//         }
+
+//         .box-title {
+//             display: flex;
+//             gap: 17px;
+//             color: #fff;
+//             background: $color-key;
+//             padding: 15px 20px;
+//             border-radius: 5px 5px 0px 0px;
+
+
+//             p:first-of-type {
+//                 font-family: $font-family-en;
+//                 font-size: 20px;
+//                 font-weight: 500;
+//                 line-height: 161%;
+//             }
+//             p:last-of-type {
+//                 font-size: 18px;
+//                 font-weight: 700;
+//             }
+
+//         }
+
+//         .box-body{
+//             background-color: #fff;
+//             border-radius: 5px;
+//             padding: 35px 20px;
+//             text-align: center;
+
+//             ._text {
+//                 text-align: left;
+//             }
+//             ._image {
+//                 margin-top: 20px;
+//             }
+//             ._button {
+//                 margin-top: 25px;
+//                 img {
+
+//                 }
+//             }
+//         }
+//     }
+// }
+
+
+.flow {
+    padding-top: 70px;
+    padding-bottom: 70px;
+    background-color: #f5f5f5;
+
+    @include mq(pc) {
+        padding-top: 110px;
+        padding-bottom: 110px;
+    }
+    .heading {
+        text-align: center;
+        &-ja {
+            color: $color;
+        }
+    }
+
+    &__boxes {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 40px;
+        justify-content: space-between;
+        margin-top: 20px;
+        padding: 0 20px;
+
+        @include mq(tb) {
+            margin-top: 80px;
+            gap: 0;
+            max-width: 830px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    }
+
+    &__box {
+        position: relative;
+        width: calc(33.333% - 20px);
+        padding: 20px;
+        box-sizing: border-box;
+        border: 2px solid $color-key;
+        background-color: #fff;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        color: $color-key;
+
+        &:not(:first-child) {
+            height: 280px;
+
+            @include mq(pc) {
+                height: 350px;
+            }
+        }
+
+
+        .box-num {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: $color-key;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            left: -15px;
+            top: -15px;
+            font-weight: bold;
+        }
+
+        .box-title {
+            margin-top: 0;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .box-img {
+            width: 70px;
+            height: 70px;
+            margin: 20px 0;
+        }
+        .box-text {
+            flex-grow: 1;
+            text-align: left;
+            font-size: 14px;
+        }
+        .box-btn {
+            margin-top: auto;
+            cursor: pointer;
+        }
+
+        &:nth-child(n+2) .flow__btn {
+            display: none;
+        }
+    }
+}
+  
+  @media screen and (max-width: 768px) {
+    .boxes {
+      flex-direction: column;
+    }
+    .flow__box {
+      width: 100%;
+    }
+  }
+  
+
+// よくある質問 -----------------------------
+
+.faq {
+    padding-top: 70px;
+    padding-bottom: 70px;
+
+    &__content {
+        max-width: 500px;
+        margin: auto;
+        text-align: center;
+
+        @include mq(pc) {
+            max-width: 800px;
+        }
+    }
+
+    &__list {
+        margin-top: 40px;
+
+        @include mq(pc) {
+            margin-top: 80px;
+        }
+    }
+
+    &__item {
+        background: #fff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+        overflow: hidden;
+        border-bottom: 1px solid #ddd; /* 質問ごとの区切り */
+
+        @include mq(pc) {
+            border-radius: 5px;
+        }
+    }
+
+    &__question {
+        width: 100%;
+        text-align: left;
+        background-color: #ececec;
+        color: #333;
+        border: none;
+        cursor: pointer;
+        outline: none;
+        display: flex; /* 横並びにする */
+        align-items: center; /* アイコンを中央に配置 */
+        position: relative; /* 相対位置でアイコンを右寄せ */
+        justify-content: space-between; /* アイコンと質問文を左右に配置 */
+        font-size: 14px;
+        padding: 20px 15px;
+
+        @include mq(pc) {
+            font-size: 18px;
+            padding: 20px;
+        }
+
+        &::after {
+            content: '＋';
+            font-size: 20px; /* アイコンの大きさ */
+            font-weight: bold;
+            position: absolute; /* 絶対位置で右寄せ */
+            right: 10px; /* アイコンを少し右に */
+            top: 50%; /* 垂直方向で中央に配置 */
+            transform: translateY(-50%); /* 完全に中央にする */
+
+            @include mq(pc) {
+                right: 25px; /* 右側に余白を入れる */
+            }
+        }
+
+        &.active::after {
+            content: '−';
+        }
+    }
+
+    &__answer {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease, padding 0.3s ease;
+        padding: 0 10px; /* スマホでは横パディングを小さく */
+
+        p {
+            text-align: left;
+            font-size: 14px;
+            color: #333;
+        }
+
+        @include mq(pc) {
+            font-size: 16px;
+        }
+
+        &.open {
+            max-height: 500px;
+            padding: 20px;
+        }
+    }
+}
+
+.footer {
+    background: $color-key;
+    text-align: center;
+    padding: 30px 0;
+
+    small {
+        color: #fff;
+        font-size: 11px;
+    }
+}
